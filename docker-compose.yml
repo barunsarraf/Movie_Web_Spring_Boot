@@ -1,0 +1,78 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+
+  configServer:
+    image: configserver-image
+    build: configserver/
+    restart: always
+    container_name: config-server
+    depends_on:
+      - eureka
+    ports:
+      - 8888:8888
+
+  mysql:
+    image: mysql:latest
+    ports:
+      - 3306:3306
+    container_name: mysqlserver
+    volumes:
+      - $HOME/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: Root@123
+      MYSQL_DATABASE: users
+
+
+  eureka:
+      image: eureka-image
+      build: eurekaserver/
+      restart: always
+      container_name: eureka
+      ports:
+        - 8761:8761
+
+  mongo:
+    image: mongo
+    container_name: mongocontainer
+    restart: always
+    volumes:
+      - $HOME/mongo:/data/db/
+
+  apiGateway: 
+    image: api-interfaceimage
+    build: apiinterface/
+    restart: always
+    container_name: api-interface
+    depends_on:
+      - eureka
+    ports: 
+          - 8777:8777
+
+
+  movie: 
+    image: movie-image
+    build: Movie-RestFul-API-using-Spring-Boot-MongoDatabase/
+    restart: always
+    container_name: movie-service
+    depends_on:
+      - eureka
+      - configServer
+      - mongo
+    ports:
+      - 8083:8083
+
+  users:
+    image: user-image
+    build: UserService/
+    restart: always
+    container_name: users
+    ports:
+          - 8082:8082
+    depends_on:
+      - eureka
+      - mysql
+      - configServer
+    links:
+      - mysql
