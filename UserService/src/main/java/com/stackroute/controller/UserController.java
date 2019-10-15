@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RefreshScope
 @RequestMapping(value = "api/v1")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
     UserServices userServices;
 

@@ -6,13 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import org.springframework.data.annotation.Id;
 import java.math.BigDecimal;
 
-@Entity
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,7 +17,6 @@ import java.math.BigDecimal;
 public class Movie {
 
     @Id
-    @GeneratedValue
     private int movieId;
 
     private String movieName;

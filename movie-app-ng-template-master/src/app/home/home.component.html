@@ -16,18 +16,49 @@
 
                 <label for="cast">Movie Cast:</label>
                 <textarea #moviecast  id="cast"></textarea>
-
               </div>
         </div>
-
 </form>
+
+<form >
+    <div class="form-group row">
+
+       
+            <div class="jumbotron">
+                <br>
+                <label for="id">User Id:</label>
+                <textarea #userid  id="id" ></textarea>
+
+                <label for="name">First Name:</label>
+                <textarea #userfname  id="name" ></textarea>
+            
+
+                <label for="cast">Last Name:</label>
+                <textarea #userlname id="cast"></textarea>
+        
+
+                <label for="age">Age:</label>
+                <textarea #userage id="age"></textarea>
+
+                <button (click)="registernewuser(userid.value,userfname.value,userlname.value,userage.value)" style="background: #263238;color:wheat" class="btn my-2 my-sm-0" type="submit">Register User</button>
+              </div>
+        </div>
+</form>
+
+
 <div class="container">
     <section class="row">
-        <div *ngFor = "let movie of movies.results" class="col-md-4 " style="margin-top: 10px;">
+        <div *ngFor = "let movie of movies" class="col-md-4 " style="margin-top: 10px;">
             <div class="card text-center" style="background: rgba(255,255,255, 0.12)">
-                <img class="card-img-top" src="https://image.tmdb.org/t/p/w500{{movie.poster_path}}" alt="Card image cap" style="height: 30rem;">
+                <p>{{movie.movieName}}</p>
+                <p>{{movie.movieCast}}</p>
+
                     <div class="card-body">
-                        <button (click) = "goToMovie(movie.id)" class="btn btn-dark">Know More</button>
+                        <button (click) = "goToMovie(movie.movieId)" class="btn btn-dark">Know More</button>
+                    </div>
+
+                    <div class="card-body">
+                        <button (click) = "deleteMovie(movie.movieId)" class="btn btn-dark">Delete</button>
                     </div>
             </div>
         </div>

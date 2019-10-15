@@ -15,28 +15,18 @@ import java.util.List;
 
 @Api
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping(value = "/api/v1")
 public class MovieController {
 
+
+    MovieService movieService;
     @Autowired
     public void setMovieService( MovieService movieService) {
         this.movieService = movieService;
     }
 
-    MovieService movieService;
-
-
-
-
-    public MovieController(MovieService movieService) {
-        this.movieService =movieService;
-    }
-
-
-
-
     @PostMapping("movie")
-    @CrossOrigin
     public ResponseEntity<?> savemovie(@RequestBody Movie movie) throws MovieNotFoundException
     {
         ResponseEntity responseEntity;
@@ -45,7 +35,6 @@ public class MovieController {
         return responseEntity;
     }
 
-    @CrossOrigin
     @GetMapping("movie")
     public ResponseEntity<?> getmovielist()
     {
@@ -65,23 +54,12 @@ public class MovieController {
 
 
     @PutMapping("movie")
-    @CrossOrigin
     public ResponseEntity<?> updatemovie(@RequestBody Movie movie) throws MovieNotFoundException {
         ResponseEntity responseEntity;
-
-        try{
-            Movie updatemovie=movieService.updateMovieusingput(movie);
-            responseEntity=new ResponseEntity<Movie>(movie,HttpStatus.OK);
-        }
-        catch(MovieNotFoundException e)
-        {
-            responseEntity= new ResponseEntity<Movie>(movie,HttpStatus.CONFLICT);
-            throw e;
-        }
+        movieService.updateMovieusingput(movie);
+        responseEntity= new ResponseEntity<Movie>(movie,HttpStatus.OK);
         return responseEntity;
-
     }
-
 
 
 
@@ -105,21 +83,11 @@ public class MovieController {
     }
     */
 
-    @GetMapping(path = "/movie/id/{movieId}")
-    @CrossOrigin
-    public ResponseEntity<?> getmoviebyid(@PathVariable int movieId)
-    {
+    @GetMapping(path = "/movie/{movieId}")
+    public ResponseEntity<?> getmoviebyid(@PathVariable int movieId) throws MovieNotFoundException {
         ResponseEntity responseEntity;
-
-        try{
-            Movie movie=movieService.getmoviebyid(movieId);
-            responseEntity=new ResponseEntity<Movie>(movie,HttpStatus.OK);
-        }
-        catch(Exception e)
-        {
-            responseEntity= new ResponseEntity<String>(e.getMessage(),HttpStatus.CONFLICT);
-            return null;
-        }
+        Movie m = movieService.getmoviebyid(movieId);
+        responseEntity= new ResponseEntity<Movie>(m,HttpStatus.OK);
         return responseEntity;
     }
 
@@ -142,7 +110,6 @@ public class MovieController {
     }*/
 
     @GetMapping(path = "/movie/moviename")
-    @CrossOrigin
     public ResponseEntity<?> getmoviebyname(@RequestParam String movieName)
     {
         ResponseEntity responseEntity;
@@ -164,21 +131,12 @@ public class MovieController {
 
 
 
-    @DeleteMapping(path = "/movie/{movieId}")
     @CrossOrigin
-    public ResponseEntity<?> deletemoviebyid(@PathVariable int movieId)
-    {
+    @DeleteMapping(path = "/movie/{movieId}")
+    public ResponseEntity<?> deletemoviebyid(@PathVariable int movieId) throws MovieNotFoundException {
         ResponseEntity responseEntity;
-
-        try{
             Movie movie=movieService.deletemoviebyid(movieId);
             responseEntity=new ResponseEntity<Movie>(movie,HttpStatus.OK);
-        }
-        catch(Exception e)
-        {
-            responseEntity= new ResponseEntity<String>(e.getMessage(),HttpStatus.CONFLICT);
-            return null;
-        }
         return responseEntity;
     }
 

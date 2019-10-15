@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MovieService } from '../movie.service';
 import { favourites } from '../favourites';
 //import {Location} from '@angular/common';
@@ -11,7 +11,7 @@ import { favourites } from '../favourites';
 })
 export class MovieComponent implements OnInit {
   public movieId;
-  public movie={};
+  public movie=[];
   public isFav;
   public favObj = {};
   public commentVal;
@@ -19,19 +19,15 @@ export class MovieComponent implements OnInit {
   public tobeEditedIndex;
   public styleObj = {};
   public tobeEdited = false;
-  constructor(private route: ActivatedRoute, private _movieService: MovieService) { }
+  constructor(private route: ActivatedRoute, private _movieService: MovieService,private router:Router) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params:ParamMap)=>{
       this.movieId = params.get('id');
     });
     this._movieService.getParticularMovie(this.movieId)
-                                .subscribe(data => this.movie = data);
-    this._movieService.checkIfFav(this.movieId)
-                                .subscribe(data => {
-                                                      this.isFav=true;
-                                                      this.favObj = data;
-                                                    },error=>this.isFav=false);
+                                .subscribe(data => this.movie=data);
+   
     //this.styleObj = {
     //  'background-image': 'url(`https://image.tmdb.org/t/p/w500"+${movie.backdrop_path} `)'
     //};
@@ -81,5 +77,10 @@ export class MovieComponent implements OnInit {
         this.ngOnInit();}
     );
   }
-
+  updatemovie(name,cast,genre,budget,date)
+  {
+    var updatedmovie={"movieId":this.movieId,"movieName":name,"movieCast":cast,"movieGenre":genre,"movieReleaseDate":date};
+    this._movieService.updatemovie(updatedmovie).subscribe();
+    this.router.navigateByUrl(`/favourite`);
+  }
 }

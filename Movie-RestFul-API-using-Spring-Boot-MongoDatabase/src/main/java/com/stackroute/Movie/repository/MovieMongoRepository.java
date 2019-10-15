@@ -8,4 +8,8 @@ import org.springframework.stereotype.Repository;
 public interface MovieMongoRepository extends MongoRepository<Movie,Integer>{ // this is for mongodb
 
     Movie findByMovieName(String movieName);
+
+    Boolean existsByMovieId(int movieId);
+
+    Movie findByMovieId(int movieId);
 }

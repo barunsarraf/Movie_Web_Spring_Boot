@@ -58,29 +58,49 @@ public class MovieMongoServiceImpl implements MovieService {
 
     @Override
     public Movie updateMovieusingput(Movie movie) throws MovieNotFoundException {
-        if(movieMongoRepository.existsById(movie.getMovieId()))
-        {
+
+        if (movieMongoRepository.existsById(movie.getMovieId())) {
+
+            Movie movie1 = movieMongoRepository.findById(movie.getMovieId()).get();
+            movie1.setMovieBudget(movie.getMovieBudget());
+            movie1.setMovieCast(movie.getMovieCast());
+            movie1.setMovieGenre(movie.getMovieGenre());
+            movie1.setMovieReleaseDate(movie.getMovieReleaseDate());
+            movie1.setMovieName(movie.getMovieName());
             movieMongoRepository.save(movie);
             return movie;
+        } else {
+            throw new MovieNotFoundException("Movie Not Found");
         }
+
+    }
+
+    @Override
+    public Movie getmoviebyid(int movieId) throws MovieNotFoundException {
+
+        if (movieMongoRepository.existsById(movieId)) {
+            return movieMongoRepository.findById(movieId).get();
+        } else {
+            throw new MovieNotFoundException("Movie Not Found");
+        }
+
+
+    /*    if(movieMongoRepository.existsByMovieId(movieId)){
+            Movie moviebyid=movieMongoRepository.findByMovieId(movieId);
+            return moviebyid;}
         else
-        {
-            throw new MovieNotFoundException("Movie is not present with this id");
+            throw new MovieNotFoundException("Movie not exit present with this id");*/
+    }
+
+    @Override
+    public Movie deletemoviebyid(int movieId) throws MovieNotFoundException {
+        if (movieMongoRepository.existsById(movieId)) {
+            Movie movie = movieMongoRepository.findById(movieId).get();
+            movieMongoRepository.deleteById(movieId);
+            return movie;
+        } else {
+            throw new MovieNotFoundException("Movie Not Found");
         }
-
-    }
-
-    @Override
-    public Movie getmoviebyid(int movieId) {
-        Movie moviebyid=movieMongoRepository.findById(movieId).get();
-        return moviebyid;
-    }
-
-    @Override
-    public Movie deletemoviebyid(int movieId) {
-        Movie movie_to_be_deleted = movieMongoRepository.findById(movieId).get();
-        movieMongoRepository.delete(movie_to_be_deleted);
-        return movie_to_be_deleted;
     }
 
 

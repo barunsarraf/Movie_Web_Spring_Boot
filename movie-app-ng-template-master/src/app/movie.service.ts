@@ -13,12 +13,14 @@ export class MovieService {
   private _url = 'https://api.themoviedb.org/3/movie/';
   private apiKey = 'b2edde3062978e00f939b23cc1cb99a0';
   getMovies(): any{
-    let moviesUrl = `${this._url}popular?api_key=${this.apiKey}&language=${'en'}`;
-    return this.http.get(moviesUrl);
+    let _url = `http://localhost:8777/movieservice`;
+    return this.http.get(_url);
   }
   getParticularMovie(movie_id): any{
-    let movieUrl = `https://api.themoviedb.org/3/movie/${movie_id}?api_key=${this.apiKey}&language=en-US`;
-    return this.http.get(movieUrl);
+
+    let _url = `http://localhost:8777/movieservice/`;
+    _url=_url+movie_id;
+    return this.http.get(_url);
   }
   getSearchedMovies(search_query): any{
     let search_url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apiKey}&language=en-US&page=1&include_adult=false&query=${search_query}`
@@ -51,8 +53,24 @@ export class MovieService {
     let _url = `http://localhost:8777/movieservice`;
     return this.http.post(_url,movieobj,httpOptions);
   }
+  updatemovie(updateobj)
+  {
+    console.log(updateobj);
+    let _url = `http://localhost:8777/movieservice/`;
+    return this.http.put(_url,updateobj,httpOptions);
+  }
+  deleteMovieById(id)
+  {
+    console.log("inside the movie service deleting movie with id:",id);
+    let _url = `http://localhost:8777/movieservice/${id}`;
+    return this.http.delete(_url,httpOptions);
+  }
+  registernewuser(userobj)
+  {
+    console.log(userobj);
+    let _url = `http://localhost:8777/userservice`;
+    return this.http.post(_url,userobj,httpOptions);
 
-
-  
+  }
   
 }
