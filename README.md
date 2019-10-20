@@ -1,5 +1,5 @@
 # Movie_Web_Spring_Boot
-This is movie Web App where you perform CRUD operation on movie and user object.
+This is movie Web App where you perform CRUD operation on movie and user object and get the data from the api that is using different mapping in springboot.
 
 #Technology Used:
 Angular
@@ -15,11 +15,11 @@ Mysql
 ## for the mongo and mysql the configuration setting properties are being fetched from the github repo for which we have config server
 
 ## microservices i have:
-movieservice
-userservice
-eurekaservice
-configserivce
-apigatewayservice
+### movieservice
+### userservice
+### eurekaservice
+### configserivce
+### apigatewayservice
 
 all of these will be running on differnt port make sure you kill the port before running.
 
